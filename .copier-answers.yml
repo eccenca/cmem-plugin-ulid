@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier
+_commit: v5.3.1
+_src_path: gh:eccenca/cmem-plugin-template
+author_mail: cmempy-developer@eccenca.com
+author_name: eccenca GmbH
+github_page: https://github.com/eccenca/cmem-plugin-ulid
+project_description: Create ULID's(Universally Unique Lexicographically Sortable Identifier)
+    in transformations
+project_slug: ulid
+pypi: true
+
