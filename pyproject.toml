@@ -18,6 +18,7 @@ homepage = "https://github.com/eccenca/cmem-plugin-ulid"
 [tool.poetry.dependencies]
 # if you need to change python version here, change it also in .python-version
 python = "^3.11"
+python-ulid = "^2.2.0"
 
 [tool.poetry.dependencies.cmem-plugin-base]
 version = "^4.1.0"
