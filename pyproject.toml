@@ -2,7 +2,7 @@
 name = "cmem-plugin-ulid"
 version = "0.0.0"
 license = "Apache-2.0"
-description = "Create ULID's(Universally Unique Lexicographically Sortable Identifier) in transformations"
+description = "Create Universally Unique Lexicographically Sortable Identifiers (ULID) in transformations."
 authors = ["eccenca GmbH <cmempy-developer@eccenca.com>"]
 classifiers = [
     "Development Status :: 4 - Beta",
