@@ -2,9 +2,10 @@
 from typing import Sequence
 
 from cmem_plugin_base.dataintegration.description import (
-    Plugin,
+    Plugin, PluginParameter,
 )
 from cmem_plugin_base.dataintegration.plugins import TransformPlugin
+from cmem_plugin_base.dataintegration.types import IntParameterType
 from ulid import ULID
 
 
@@ -20,16 +21,27 @@ then it will generate one ULID.
 
 """,
     parameters=[
+        PluginParameter(
+            name="number_of_values",
+            label="Number of Values",
+            description="The number of ULIDs to generate.",
+            default_value=1,
+            param_type=IntParameterType()
+        ),
+
     ],
 )
 class ULIDTransformPlugin(TransformPlugin):
     """ULID Transform Plugin"""
 
+    def __init__(self, number_of_values=1):
+        if number_of_values < 1:
+            raise ValueError("Number of Values needs to be a positive integer.")
+
+        self.number_of_values = number_of_values
+
     def transform(self, inputs: Sequence[Sequence[str]]) -> Sequence[str]:
         result = []
-        if len(inputs) != 0:
-            for collection in inputs:
-                result += [f"{ULID()}" for _ in collection]
-        if len(result) == 0:
+        for _ in range(self.number_of_values):
             result += [f"{ULID()}"]
         return result
