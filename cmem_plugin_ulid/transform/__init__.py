@@ -5,45 +5,71 @@ from cmem_plugin_base.dataintegration.description import (
     Plugin, PluginParameter,
 )
 from cmem_plugin_base.dataintegration.plugins import TransformPlugin
-from cmem_plugin_base.dataintegration.types import IntParameterType
+from cmem_plugin_base.dataintegration.types import IntParameterType, BoolParameterType
 from ulid import ULID
+
+
+URN_PREFIX = "urn:x-ulid:"
 
 
 @Plugin(
     label="ULID",
     plugin_id="cmem-plugin-ulid",
-    description="Generate a ULID from a random number, and the current time.",
+    description="Generate ULID strings - Universally Unique Lexicographically"
+                " Sortable Identifiers.",
+    categories=["Value", "Identifier"],
     documentation="""
-This ulid transform operator generates random lexicographically sortable ulid.
+ULID is a proposed identifier scheme, which produces time-based, random
+and sortable strings. The following features are highlighted
+[in the specification](https://github.com/ulid/spec):
 
-Generates random ULID, based on length of inputs, if their are no inputs.
-then it will generate one ULID.
-
+- 128-bit compatibility with UUID
+- 1.21e+24 unique ULIDs per millisecond
+- Lexicographically sortable!
+- Canonically encoded as a 26 character string, as opposed to the 36 character UUID
+- Uses Crockford's base32 for better efficiency and readability (5 bits per character)
+- Case insensitive
+- No special characters (URL safe)
+- Monotonic sort order (correctly detects and handles the same millisecond)
 """,
     parameters=[
         PluginParameter(
             name="number_of_values",
             label="Number of Values",
-            description="The number of ULIDs to generate.",
+            description="Number of values to generate per entity.",
             default_value=1,
             param_type=IntParameterType()
         ),
-
+        PluginParameter(
+            name="generate_urn",
+            label="Generate URNs",
+            description=f"Generate '{URN_PREFIX}*' strings.",
+            param_type=BoolParameterType()
+        ),
     ],
 )
 class ULIDTransformPlugin(TransformPlugin):
     """ULID Transform Plugin"""
 
-    def __init__(self, number_of_values=1):
+    def __init__(
+            self,
+            number_of_values: int = 1,
+            generate_urn: bool = False
+    ):
         if number_of_values < 1:
             raise ValueError("Number of Values needs to be a positive integer.")
 
         self.number_of_values = number_of_values
+        self.generate_urn = generate_urn
 
     def transform(self, inputs: Sequence[Sequence[str]]) -> Sequence[str]:
         if inputs:
             raise ValueError("Plugin does not support processing input entities.")
         result = []
-        for _ in range(self.number_of_values):
-            result += [f"{ULID()}"]
+        if self.generate_urn:
+            for _ in range(self.number_of_values):
+                result += [f"{URN_PREFIX}{ULID()}"]
+        else:
+            for _ in range(self.number_of_values):
+                result += [f"{ULID()}"]
         return result
