@@ -41,6 +41,8 @@ class ULIDTransformPlugin(TransformPlugin):
         self.number_of_values = number_of_values
 
     def transform(self, inputs: Sequence[Sequence[str]]) -> Sequence[str]:
+        if inputs:
+            raise ValueError("Plugin does not support processing input entities.")
         result = []
         for _ in range(self.number_of_values):
             result += [f"{ULID()}"]
