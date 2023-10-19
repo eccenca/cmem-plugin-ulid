@@ -31,6 +31,9 @@ and sortable strings. The following features are highlighted
 - Case insensitive
 - No special characters (URL safe)
 - Monotonic sort order (correctly detects and handles the same millisecond)
+
+This transform plugin allows for creation of ULID based identifiers (plain or URN).
+It does not support any input entities.
 """,
     parameters=[
         PluginParameter(
