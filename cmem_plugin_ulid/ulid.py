@@ -1,13 +1,14 @@
 """lifetime(age) transform plugin module"""
-from typing import Sequence
+
+from collections.abc import Sequence
 
 from cmem_plugin_base.dataintegration.description import (
-    Plugin, PluginParameter,
+    Plugin,
+    PluginParameter,
 )
 from cmem_plugin_base.dataintegration.plugins import TransformPlugin
-from cmem_plugin_base.dataintegration.types import IntParameterType, BoolParameterType
+from cmem_plugin_base.dataintegration.types import BoolParameterType, IntParameterType
 from ulid import ULID
-
 
 URN_PREFIX = "urn:x-ulid:"
 
@@ -16,7 +17,7 @@ URN_PREFIX = "urn:x-ulid:"
     label="ULID",
     plugin_id="cmem-plugin-ulid",
     description="Generate ULID strings - Universally Unique Lexicographically"
-                " Sortable Identifiers.",
+    " Sortable Identifiers.",
     categories=["Value", "Identifier"],
     documentation="""
 ULID is a proposed identifier scheme, which produces time-based, random
@@ -41,24 +42,20 @@ It does not support any input entities.
             label="Number of Values",
             description="Number of values to generate per entity.",
             default_value=1,
-            param_type=IntParameterType()
+            param_type=IntParameterType(),
         ),
         PluginParameter(
             name="generate_urn",
             label="Generate URNs",
             description=f"Generate '{URN_PREFIX}*' strings.",
-            param_type=BoolParameterType()
+            param_type=BoolParameterType(),
         ),
     ],
 )
 class ULIDTransformPlugin(TransformPlugin):
     """ULID Transform Plugin"""
 
-    def __init__(
-            self,
-            number_of_values: int = 1,
-            generate_urn: bool = False
-    ):
+    def __init__(self, number_of_values: int = 1, generate_urn: bool = False):
         if number_of_values < 1:
             raise ValueError("Number of Values needs to be a positive integer.")
 
@@ -66,6 +63,7 @@ class ULIDTransformPlugin(TransformPlugin):
         self.generate_urn = generate_urn
 
     def transform(self, inputs: Sequence[Sequence[str]]) -> Sequence[str]:
+        """Transform a collection of values."""
         if inputs:
             raise ValueError("Plugin does not support processing input entities.")
         result = []
