@@ -26,10 +26,10 @@ def test_execution() -> None:
 def test_fails() -> None:
     """Test fails."""
     # no inputs allowed
-    with pytest.raises(ValueError, match="Plugin does not support processing input entities."):
+    with pytest.raises(ValueError, match=r"Plugin does not support processing input entities."):
         ULIDTransformPlugin().transform(inputs=[["2000-05-22", "2021-12-12", "1904-02-29"]])
 
-    with pytest.raises(ValueError, match="Number of Values needs to be a positive integer."):
+    with pytest.raises(ValueError, match=r"Number of Values needs to be a positive integer."):
         ULIDTransformPlugin(number_of_values=-0).transform(inputs=[])
-    with pytest.raises(ValueError, match="Number of Values needs to be a positive integer."):
+    with pytest.raises(ValueError, match=r"Number of Values needs to be a positive integer."):
         ULIDTransformPlugin(number_of_values=-1).transform(inputs=[])
